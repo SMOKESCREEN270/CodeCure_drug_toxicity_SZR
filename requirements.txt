@@ -1,4 +1,4 @@
-rdkit-pypi
+rdkit
 xgboost>=2.0.0
 shap>=0.44.0
 streamlit>=1.30.0
