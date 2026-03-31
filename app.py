@@ -25,8 +25,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from rdkit import Chem, RDLogger
 RDLogger.DisableLog('rdApp.*')
-from rdkit.Chem import AllChem, DataStructs, Draw
-from rdkit.Chem.Draw import rdMolDraw2D
+from rdkit.Chem import AllChem, DataStructs
+from rdkit.Chem import Draw
 import shap
 import io
 from PIL import Image
@@ -93,11 +93,7 @@ def draw_molecule(smiles: str):
     mol = Chem.MolFromSmiles(smiles)
     if mol is None:
         return None
-    drawer = rdMolDraw2D.MolDraw2DSVG(400, 250)
-    drawer.DrawMolecule(mol)
-    drawer.FinishDrawing()
-    svg = drawer.GetDrawingText()
-    return svg
+    return Draw.MolToImage(mol, size=(400, 250))
 
 # ─── Risk colour helper ──────────────────────────────────────────────────────
 def risk_color(prob: float) -> str:
@@ -174,7 +170,7 @@ if page == "🔬 Single Molecule":
                     st.subheader("Molecule Structure")
                     svg = draw_molecule(smiles)
                     if svg:
-                        st.image(svg.encode(), use_column_width=True)
+                        st.image(svg, use_column_width=True)
                     else:
                         st.write("Could not render structure.")
 
